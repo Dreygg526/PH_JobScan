@@ -231,12 +231,16 @@ export default function DashboardApp({ initialCvs, email }: { initialCvs: Cv[]; 
           <span className="logo"><IconSearch /></span>
           <span className="brand-name">Job<span>Scan</span></span>
         </div>
-        <button
-          className={`nav-item${["setup", "running", "results"].includes(view) ? " on" : ""}`}
-          onClick={() => setView("setup")}
-        ><IconSearch /> New scan</button>
-        <button className={`nav-item${view === "history" ? " on" : ""}`} onClick={openHistory}><IconChart /> Scan history</button>
-        <button className={`nav-item${view === "saved" ? " on" : ""}`} onClick={openSaved}><IconBookmark /> Saved jobs</button>
+        {/* Wrapped so mobile can lay these out as a horizontal chip row instead
+            of hiding everything past the first item. */}
+        <nav className="rail-nav">
+          <button
+            className={`nav-item${["setup", "running", "results"].includes(view) ? " on" : ""}`}
+            onClick={() => setView("setup")}
+          ><IconSearch /> New scan</button>
+          <button className={`nav-item${view === "history" ? " on" : ""}`} onClick={openHistory}><IconChart /> Scan history</button>
+          <button className={`nav-item${view === "saved" ? " on" : ""}`} onClick={openSaved}><IconBookmark /> Saved jobs</button>
+        </nav>
 
         <div className="rail-label">
           Your CVs <span style={{ fontFamily: "var(--mono)", color: "var(--ink-3)" }}>{cvs.length}</span>
@@ -268,7 +272,7 @@ export default function DashboardApp({ initialCvs, email }: { initialCvs: Cv[]; 
           )}
         </div>
         <button
-          className="nav-item"
+          className="nav-item rail-upload"
           style={{ marginTop: 8, border: "1px dashed var(--line)", justifyContent: "center", color: "var(--blue)" }}
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
@@ -307,6 +311,13 @@ export default function DashboardApp({ initialCvs, email }: { initialCvs: Cv[]; 
             <button className="icon-btn" title="Toggle theme" onClick={toggleTheme}>
               <IconSun />
             </button>
+            {/* The rail footer (account + sign out) is collapsed on mobile, so the
+                sign out lives here instead of being unreachable. */}
+            <form action="/auth/signout" method="post" className="only-mobile">
+              <button className="icon-btn" title={`Sign out — ${email}`} aria-label={`Sign out — ${email}`} type="submit">
+                <IconLogout />
+              </button>
+            </form>
           </div>
         </div>
 
