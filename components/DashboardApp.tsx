@@ -230,6 +230,15 @@ export default function DashboardApp({ initialCvs, email }: { initialCvs: Cv[]; 
         <div className="rail-brand">
           <span className="logo"><IconSearch /></span>
           <span className="brand-name">Job<span>Scan</span></span>
+          {/* On mobile the topbar actions move up here, flush right of the brand. */}
+          <div className="rail-actions only-mobile">
+            <button className="icon-btn" title="Toggle theme" onClick={toggleTheme}><IconSun /></button>
+            <form action="/auth/signout" method="post">
+              <button className="icon-btn" title={`Sign out — ${email}`} aria-label={`Sign out — ${email}`} type="submit">
+                <IconLogout />
+              </button>
+            </form>
+          </div>
         </div>
         {/* Wrapped so mobile can lay these out as a horizontal chip row instead
             of hiding everything past the first item. */}
@@ -311,13 +320,6 @@ export default function DashboardApp({ initialCvs, email }: { initialCvs: Cv[]; 
             <button className="icon-btn" title="Toggle theme" onClick={toggleTheme}>
               <IconSun />
             </button>
-            {/* The rail footer (account + sign out) is collapsed on mobile, so the
-                sign out lives here instead of being unreachable. */}
-            <form action="/auth/signout" method="post" className="only-mobile">
-              <button className="icon-btn" title={`Sign out — ${email}`} aria-label={`Sign out — ${email}`} type="submit">
-                <IconLogout />
-              </button>
-            </form>
           </div>
         </div>
 

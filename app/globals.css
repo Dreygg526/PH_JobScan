@@ -167,6 +167,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .rail-brand { display: flex; align-items: center; gap: 9px; padding: 4px 6px 14px; }
 .rail-nav { display: flex; flex-direction: column; gap: 4px; }
+.rail-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
 /* Shown only in the mobile layout, where the rail footer is collapsed. */
 .only-mobile { display: none; }
 .nav-item {
@@ -430,6 +431,10 @@ button { font-family: inherit; cursor: pointer; }
     padding: 12px 14px 14px; gap: 10px;
   }
   .rail-brand { padding: 0 2px 2px; }
+  /* Beats the generic .only-mobile display:block so the cluster stays a row. */
+  .rail-actions.only-mobile { display: flex; }
+  /* Both actions now live on the brand row, so the topbar keeps only the title. */
+  .top-actions { display: none; }
 
   /* Every destination stays reachable — the nav scrolls sideways as chips
      rather than collapsing to just the first item. */
