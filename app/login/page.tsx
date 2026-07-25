@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { IconSearch, IconLayers, IconLock, IconActivity } from "@/components/icons";
@@ -13,6 +13,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  // The OAuth callback reports failures back as ?error= — read it straight off
+  // the URL (rather than useSearchParams) so this page still prerenders.
+  useEffect(() => {
+    const reason = new URLSearchParams(window.location.search).get("error");
+    if (reason) {
+      setErr(reason);
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();

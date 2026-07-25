@@ -31,6 +31,15 @@ export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isAuthRoute = path.startsWith("/login") || path.startsWith("/auth");
 
+  // When the callback URL isn't in Supabase's allow-list it falls back to the
+  // Site URL, dropping the OAuth code on "/" instead. Hand it to the callback
+  // rather than bouncing to /login and losing the sign-in.
+  if (path === "/" && request.nextUrl.searchParams.has("code")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/callback";
+    return NextResponse.redirect(url);
+  }
+
   if (!user && (path === "/" || path.startsWith("/dashboard"))) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
